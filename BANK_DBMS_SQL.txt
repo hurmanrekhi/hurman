@@ -1,0 +1,81 @@
+/*Code for Banking DBMS to be run in SQL compiler*/
+
+-- Create the Customers table
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    address VARCHAR(100),
+    phone_number VARCHAR(20)
+);
+
+-- Create the Accounts table
+CREATE TABLE Accounts (
+    account_number INT PRIMARY KEY,
+    customer_id INT,
+    balance DECIMAL(10, 2),
+    account_type VARCHAR(20),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- Create the Transactions table
+CREATE TABLE Transactions (
+    transaction_id INT PRIMARY KEY,
+    account_number INT,
+    transaction_date DATE,
+    amount DECIMAL(10, 2),
+    transaction_type VARCHAR(20),
+    FOREIGN KEY (account_number) REFERENCES Accounts(account_number)
+);
+
+-- Create the Branches table
+CREATE TABLE Branches (
+    branch_id INT PRIMARY KEY,
+    branch_name VARCHAR(50),
+    address VARCHAR(100),
+    phone_number VARCHAR(20)
+);
+
+
+
+--Retrieve all customers with their account details:
+
+SELECT c.customer_id, c.first_name, c.last_name, c.address, c.phone_number, a.account_number, a.balance, a.account_type
+FROM Customers c
+JOIN Accounts a ON c.customer_id = a.customer_id;
+
+
+--Retrieve the total balance of a specific account:
+
+SELECT account_number, balance
+FROM Accounts
+WHERE account_number = <account_number>;
+
+
+--Insert a new customer:
+
+INSERT INTO Customers (customer_id, first_name, last_name, address, phone_number)
+VALUES (<customer_id>, '<first_name>', '<last_name>', '<address>', '<phone_number>');
+
+
+--Retrieve all branches with their contact details:
+
+SELECT branch_id, branch_name, address, phone_number
+FROM Branches;
+
+
+--SELECT branch_id, branch_name, address, phone_number
+FROM Branches;
+
+UPDATE Accounts
+SET balance = <new_balance>
+WHERE account_number = <account_number>;
+
+
+--Retrieve all transactions for a specific account:
+
+SELECT t.transaction_id, t.transaction_date, t.amount, t.transaction_type
+FROM Transactions t
+JOIN Accounts a ON t.account_number = a.account_number
+WHERE a.account_number = <account_number>;
+
